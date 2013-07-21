@@ -1,0 +1,21 @@
+{
+	"name": "daviddeutsch/rx",
+	"description": "A shorthand library for RedBeanPHP",
+	"minimum-stability": "stable",
+	"license": "BSD",
+	"authors" : [{
+		"name" : "David Deutsch",
+		"email" : "skore@valanx.org",
+		"homepage" : "http://valanx.org",
+		"role" : "Chief Botanist"
+	}
+	],
+	"require" : {
+		"gabordemooij/redbean": "dev-master"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"Rx" : "/src/Rx"
+		}
+	}
+}
