@@ -1,9 +1,5 @@
 <?php
 
-namespace Rx;
-
-use RedBean_Facade as R;
-
 class Rx_FindHelper
 {
 	protected $type;

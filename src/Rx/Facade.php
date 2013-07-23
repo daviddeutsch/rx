@@ -1,10 +1,6 @@
 <?php
 
-namespace Rx;
-
-use RedBean_Facade as R;
-
-class Rx_Facade
+class Rx_Facade extends RedBean_Facade
 {
 	/**
 	 * @var Rx_FindHelper
