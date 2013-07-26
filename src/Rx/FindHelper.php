@@ -76,6 +76,39 @@ class Rx_FindHelper
 		return $r;
 	}
 
+	/**
+	 * Add find parameters based on array or object passed into the function
+	 *
+	 * Say you have an array like so:
+	 *
+	 * $array = [ "test" => "data", "test2" => "data2" ];
+	 *
+	 * And you want to figure out whether there is a bean of the type 'thing',
+	 * instead of doing a
+	 *
+	 * R::$x->thing->test("data")->test2("data2")->find();
+	 *
+	 * You can just do
+	 *
+	 * R::$x->like('thing', $array)->find();
+	 *
+	 * (obviously a lot more useful with larger objects or arrays)
+
+	 * @param $type
+	 * @param $item
+	 * @return $this
+	 */
+	public function like( $type, $item )
+	{
+		$temp = $this->$type;
+
+		foreach ( $item as $k => $v ) {
+			$temp = $temp->$k($v);
+		}
+
+		return $temp;
+	}
+
 	public function free()
 	{
 		foreach ( $this as $k => $v ) {
