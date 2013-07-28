@@ -12,15 +12,15 @@ class Rx_Facade extends RedBean_Facade
 	 *
 	 * Store a bean:
 	 *
-	 * Rx::_( $bean );
+	 * R::_( $bean );
 	 *
 	 * Dispense a bean:
 	 *
-	 * Rx::_( 'type' );
+	 * R::_( 'type' );
 	 *
 	 * Load a bean:
 	 *
-	 * Rx::_( 'type', $id );
+	 * R::_( 'type', $id );
 	 *
 	 * @param      $left
 	 * @param null $right
@@ -32,7 +32,18 @@ class Rx_Facade extends RedBean_Facade
 			return R::store( $left );
 		} else {
 			if ( $right ) {
-				return R::load( $left, $right );
+				if ( is_int( $right ) ) {
+					return R::load( $left, $right );
+				} else {
+					$bean = R::dispense( $left );
+
+					foreach ( $right as $k => $v ) {
+						$bean->$k = $v;
+					}
+
+					return $bean;
+				}
+
 			} else {
 				return R::dispense( $left );
 			}

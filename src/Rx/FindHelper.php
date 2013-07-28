@@ -19,7 +19,7 @@ class Rx_FindHelper
 	 *
 	 * Would become:
 	 *
-	 * Rx::$x->branch_commit
+	 * R::$x->branch_commit
 	 *      ->branch_id($branch->id)
 	 *      ->find();
 	 *
@@ -37,7 +37,7 @@ class Rx_FindHelper
 	 *
 	 * Would become:
 	 *
-	 * Rx::$x->last->package
+	 * R::$x->last->package
 	 *      ->name($name)
 	 *      ->version_major($version[0])
 	 *      ->version_minor($version[1])
