@@ -15,7 +15,7 @@
 	},
 	"autoload" : {
 		"psr-0" : {
-			"Rx_" : "/src/Rx"
+			"Rx_" : "/src"
 		}
 	}
 }
