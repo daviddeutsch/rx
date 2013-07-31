@@ -5,7 +5,9 @@ A shorthand library for RedBeanPHP
 
 Rx_Facade extends the RedBean_Facade, so you can load it like so:
 
+```php
 use Rx_Facade as R;
+```
 
 Currently, the two main concepts I'm adding is a R::_() function that serves as a shorthand for the most common functions (loading, dispensing etc.) and the R::$x FindHelper which extends on R::$f to cut down creation of finder queries.
 
