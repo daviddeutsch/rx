@@ -45,8 +45,21 @@ class Rx_FindHelper
 	 */
 	public function find()
 	{
-		$params = array();
+		$f = $this->find;
 
+		if ( $this->params ) {
+			$r = R::$f( $this->type, $this->makeQuery(), $this->params );
+		} else {
+			$r = R::$f( $this->type );
+		}
+
+		$this->free();
+
+		return $r;
+	}
+
+	public function makeQuery()
+	{
 		$search = $order = $limit = '';
 
 		if ( !empty( $this->search ) ) {
@@ -61,19 +74,7 @@ class Rx_FindHelper
 			$limit = ' LIMIT '.$this->limit.' ';
 		}
 
-		$f = $this->find;
-
-		if ( $params ) {
-			$sql = ' '.$search.$order.$limit.' ';
-
-			$r = R::$f( $this->type, $sql, $params );
-		} else {
-			$r = R::$f( $this->type );
-		}
-
-		$this->free();
-
-		return $r;
+		return ' '.$search.$order.$limit.' ';
 	}
 
 	/**
@@ -107,6 +108,15 @@ class Rx_FindHelper
 		}
 
 		return $temp;
+	}
+
+	/**
+	 * Instead of carrying out a search, return an Iterator that
+	 * can be used in a foreach loop
+	 */
+	public function iterate()
+	{
+		// TODO!
 	}
 
 	public function free()

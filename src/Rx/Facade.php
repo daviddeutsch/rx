@@ -16,11 +16,19 @@ class Rx_Facade extends RedBean_Facade
 	 *
 	 * Dispense a bean:
 	 *
-	 * R::_( 'type' );
+	 * $type = R::_( 'type' );
+	 *
+	 * Dispense a bean and inject data:
+	 *
+	 * $object = new \stdClass();
+	 * $object->name = 'name';
+	 * $object->data = 'data';
+	 *
+	 * $type = R::_( 'type', $object );
 	 *
 	 * Load a bean:
 	 *
-	 * R::_( 'type', $id );
+	 * $type = R::_( 'type', $id );
 	 *
 	 * @param      $left
 	 * @param null $right
@@ -31,21 +39,20 @@ class Rx_Facade extends RedBean_Facade
 		if ( is_object( $left ) ) {
 			return R::store( $left );
 		} else {
-			if ( $right ) {
-				if ( is_int( $right ) ) {
-					return R::load( $left, $right );
-				} else {
-					$bean = R::dispense( $left );
+			if ( empty($right) ) {
+				return R::dispense( $left );
+			}
 
-					foreach ( $right as $k => $v ) {
-						$bean->$k = $v;
-					}
+			if ( is_int( $right ) ) {
+				return R::load( $left, $right );
+			} else {
+				$bean = R::dispense( $left );
 
-					return $bean;
+				foreach ( $right as $k => $v ) {
+					$bean->$k = $v;
 				}
 
-			} else {
-				return R::dispense( $left );
+				return $bean;
 			}
 		}
 	}
