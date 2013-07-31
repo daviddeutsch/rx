@@ -12,11 +12,11 @@ class Rx_Facade extends RedBean_Facade
 	 *
 	 * Store a bean:
 	 *
-	 * R::_( $bean );
+	 * self::_( $bean );
 	 *
 	 * Dispense a bean:
 	 *
-	 * $type = R::_( 'type' );
+	 * $type = self::_( 'type' );
 	 *
 	 * Dispense a bean and inject data:
 	 *
@@ -24,11 +24,11 @@ class Rx_Facade extends RedBean_Facade
 	 * $object->name = 'name';
 	 * $object->data = 'data';
 	 *
-	 * $type = R::_( 'type', $object );
+	 * $type = self::_( 'type', $object );
 	 *
 	 * Load a bean:
 	 *
-	 * $type = R::_( 'type', $id );
+	 * $type = self::_( 'type', $id );
 	 *
 	 * @param      $left
 	 * @param null $right
@@ -37,16 +37,16 @@ class Rx_Facade extends RedBean_Facade
 	public static function _( $left, $right=null )
 	{
 		if ( is_object( $left ) ) {
-			return R::store( $left );
+			return self::store( $left );
 		} else {
 			if ( empty($right) ) {
-				return R::dispense( $left );
+				return self::dispense( $left );
 			}
 
 			if ( is_int( $right ) ) {
-				return R::load( $left, $right );
+				return self::load( $left, $right );
 			} else {
-				$bean = R::dispense( $left );
+				$bean = self::dispense( $left );
 
 				foreach ( $right as $k => $v ) {
 					$bean->$k = $v;
@@ -64,8 +64,8 @@ class Rx_Facade extends RedBean_Facade
 	 */
 	public static function db( $cfg )
 	{
-		if ( empty( R::$toolboxes ) ) {
-			R::setup(
+		if ( empty( self::$toolboxes ) ) {
+			self::setup(
 				$cfg->type.':host='.$cfg->host.';'
 				.'dbname='.$cfg->name,
 				$cfg->user,
@@ -73,8 +73,8 @@ class Rx_Facade extends RedBean_Facade
 			);
 		}
 
-		if ( !isset( R::$toolboxes[$cfg->name] ) ) {
-			R::addDatabase(
+		if ( !isset( self::$toolboxes[$cfg->name] ) ) {
+			self::addDatabase(
 				$cfg->name,
 				$cfg->type.':host='.$cfg->host.';'
 				.'dbname='.$cfg->name,
@@ -83,6 +83,6 @@ class Rx_Facade extends RedBean_Facade
 			);
 		}
 
-		R::selectDatabase( $cfg->name );
+		self::selectDatabase( $cfg->name );
 	}
 }
