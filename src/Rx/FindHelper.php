@@ -41,8 +41,8 @@ class Rx_FindHelper
 	 *
 	 * R::$x->last->package
 	 *      ->name($name)
-	 *      ->version_major($version[0])
-	 *      ->version_minor($version[1])
+	 *      ->major($version[0])
+	 *      ->minor($version[1])
 	 *      ->find();
 	 */
 	public function find()
@@ -54,6 +54,20 @@ class Rx_FindHelper
 		} else {
 			$r = R::$f( $this->type );
 		}
+
+		$this->free();
+
+		return $r;
+	}
+
+	/**
+	 * Pretty much the same as find(), just for counting beans
+	 * 
+	 * @return int
+	 */
+	public function count()
+	{
+		$r = R::count( $this->type, $this->makeQuery(), $this->param );
 
 		$this->free();
 
