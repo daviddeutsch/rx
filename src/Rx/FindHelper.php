@@ -62,7 +62,7 @@ class Rx_FindHelper
 
 	/**
 	 * Pretty much the same as find(), just for counting beans
-	 * 
+	 *
 	 * @return int
 	 */
 	public function count()

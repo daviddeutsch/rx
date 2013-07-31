@@ -33,6 +33,10 @@ class Rx_Facade extends RedBean_Facade
 	 *
 	 * $type = self::_( 'type', $object );
 	 *
+	 * Add a third, true parameter to also store it right away:
+	 *
+	 * $type = self::_( 'type', $object, true );
+	 *
 	 * Load a bean:
 	 *
 	 * $type = self::_( 'type', $id );
@@ -41,22 +45,26 @@ class Rx_Facade extends RedBean_Facade
 	 * @param null $right
 	 * @return array|int|\RedBean_OODBBean
 	 */
-	public static function _( $left, $right=null )
+	public static function _( $one, $two=null, $three=null )
 	{
-		if ( is_object( $left ) ) {
-			return self::store( $left );
+		if ( is_object( $one ) ) {
+			return self::store( $one );
 		} else {
-			if ( empty($right) ) {
-				return self::dispense( $left );
+			if ( empty($two) ) {
+				return self::dispense( $one );
 			}
 
-			if ( is_int( $right ) ) {
-				return self::load( $left, $right );
+			if ( is_int( $two ) ) {
+				return self::load( $one, $two );
 			} else {
-				$bean = self::dispense( $left );
+				$bean = self::dispense( $one );
 
-				foreach ( $right as $k => $v ) {
+				foreach ( $two as $k => $v ) {
 					$bean->$k = $v;
+				}
+
+				if ( $three===true ) {
+					$bean->id = self::store($bean);
 				}
 
 				return $bean;
