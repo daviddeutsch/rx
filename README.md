@@ -3,6 +3,10 @@ rx
 
 A shorthand library for RedBeanPHP
 
+
+## CAUTION | Large parts of this are untested and I'm making stuff up as I go along | CAUTION
+
+
 Rx_Facade extends the RedBean_Facade, so you can load it like so:
 
 ```php
