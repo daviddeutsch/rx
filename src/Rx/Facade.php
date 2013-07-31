@@ -7,6 +7,13 @@ class Rx_Facade extends RedBean_Facade
 	 */
 	public static $x;
 
+	public static function setup($dsn = null, $username = null, $password = null, $frozen = false)
+	{
+		parent::setup($dsn, $username, $password, $frozen);
+
+		self::$x = new Rx_FindHelper();
+	}
+
 	/**
 	 * Multi-Purpose Shortcut for handling Beans
 	 *
