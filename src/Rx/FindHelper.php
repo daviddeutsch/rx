@@ -93,17 +93,16 @@ class Rx_FindHelper
 	 *
 	 * You can just do
 	 *
-	 * R::$x->like('thing', $array)->find();
+	 * R::$x->thing->like($array)->find();
 	 *
 	 * (obviously a lot more useful with larger objects or arrays)
 
-	 * @param $type
 	 * @param $item
 	 * @return $this
 	 */
-	public function like( $type, $item )
+	public function like( $item )
 	{
-		$temp = $this->$type;
+		$temp = $this;
 
 		foreach ( $item as $k => $v ) {
 			$temp = $temp->$k($v);
@@ -115,6 +114,10 @@ class Rx_FindHelper
 	/**
 	 * Instead of carrying out a search, return an Iterator that
 	 * can be used in a foreach loop
+	 *
+	 * foreach( R::$x->user->age(26) as $user ) {
+	 *     // Do something
+	 * }
 	 */
 	public function iterate()
 	{

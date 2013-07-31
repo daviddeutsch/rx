@@ -21,7 +21,7 @@ class Rx_Facade extends RedBean_Facade
 	 *
 	 * self::_( $bean );
 	 *
-	 * Dispense a bean:
+	 * Dispensing a bean:
 	 *
 	 * $type = self::_( 'type' );
 	 *
