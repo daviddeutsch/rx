@@ -17,30 +17,6 @@ class Rx_Facade extends RedBean_Facade
 	/**
 	 * Multi-Purpose Shortcut for handling Beans
 	 *
-	 * Store a bean:
-	 *
-	 * self::_( $bean );
-	 *
-	 * Dispensing a bean:
-	 *
-	 * $type = self::_( 'type' );
-	 *
-	 * Dispense a bean and inject data:
-	 *
-	 * $object = new \stdClass();
-	 * $object->name = 'name';
-	 * $object->data = 'data';
-	 *
-	 * $type = self::_( 'type', $object );
-	 *
-	 * Add a third, true parameter to also store it right away:
-	 *
-	 * $type = self::_( 'type', $object, true );
-	 *
-	 * Load a bean:
-	 *
-	 * $type = self::_( 'type', $id );
-	 *
 	 * @param      $left
 	 * @param null $right
 	 * @return array|int|\RedBean_OODBBean

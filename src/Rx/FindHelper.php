@@ -19,35 +19,7 @@ class Rx_FindHelper
 	protected $find = 'find';
 
 	/**
-	 * Example:
-	 *
-	 * R::find( 'branch_commit', ' branch_id = ? ', array($branch->id) );
-	 *
-	 * Would become:
-	 *
-	 * R::$x->branch_commit
-	 *      ->branch_id($branch->id)
-	 *      ->find();
-	 *
-	 * Or:
-	 *
-	 * R::findLast(
-	 *          'package',
-	 *          ' name = :name AND major = :major AND minor = :minor ',
-	 *          array(
-	 *             ':name' => $name,
-	 *             ':major' => $version[0],
-	 *             ':minor' => $version[1]
-	 *          )
-	 *   );
-	 *
-	 * Would become:
-	 *
-	 * R::$x->last->package
-	 *      ->name($name)
-	 *      ->major($version[0])
-	 *      ->minor($version[1])
-	 *      ->find();
+	 * Main Find Helper function that concludes a search, returning results
 	 */
 	public function find( $force=false )
 	{
@@ -129,22 +101,8 @@ class Rx_FindHelper
 	/**
 	 * Add find parameters based on array or object passed into the function
 	 *
-	 * Say you have an array like so:
-	 *
-	 * $array = [ "test" => "data", "test2" => "data2" ];
-	 *
-	 * And you want to figure out whether there is a bean of the type 'thing',
-	 * instead of doing a
-	 *
-	 * R::$x->thing->test("data")->test2("data2")->find();
-	 *
-	 * You can just do
-	 *
-	 * R::$x->thing->like($array)->find();
-	 *
-	 * (obviously a lot more useful with larger objects or arrays)
-
 	 * @param $item
+	 *
 	 * @return $this
 	 */
 	public function like( $item )
