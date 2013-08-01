@@ -8,9 +8,13 @@ class Rx_FindHelper
 
 	protected $params = array();
 
+	protected $params_plain = array();
+
 	protected $search = array();
 
 	protected $order = array();
+
+	protected $related = array();
 
 	protected $find = 'find';
 
@@ -45,7 +49,7 @@ class Rx_FindHelper
 	 *      ->minor($version[1])
 	 *      ->find();
 	 */
-	public function find()
+	public function find( $force=false )
 	{
 		$f = $this->find;
 
@@ -55,9 +59,40 @@ class Rx_FindHelper
 			$r = R::$f( $this->type );
 		}
 
+		if ( !is_array($r) ) {
+			$r = array($r);
+		}
+
+		// If we are looking for related beans, filter out unrelated ones
+		if ( !empty( $this->related ) ) {
+			if ( is_array( $r ) ) {
+				foreach ( $r as $k => $b ) {
+					foreach ( $this->related as $bean ) {
+						if ( !R::areRelated( $b, $bean ) ) {
+							unset( $r[$k] );
+						}
+					}
+				}
+			}
+		}
+
+		if ( $force && empty($r) ) {
+			$r = array( R::_($this->type, $this->params_plain, true) );
+
+			if ( !empty( $this->related ) ) {
+				foreach ( $this->related as $bean ) {
+					R::associate( $r[0], $bean );
+				}
+			}
+		}
+
 		$this->free();
 
-		return $r;
+		if ( count($r) > 1 ) {
+			return $r;
+		} else {
+			return $r[0];
+		}
 	}
 
 	/**
@@ -190,6 +225,15 @@ class Rx_FindHelper
 		return $this;
 	}
 
+	public function related( $bean )
+	{
+		if ( is_array( $bean ) ) {
+			$this->related = array_merge( $this->related, $bean );
+		} else {
+			$this->related[] = $bean;
+		}
+	}
+
 	public function __get( $name )
 	{
 		if ( method_exists( $this, $name ) ) {
@@ -208,10 +252,14 @@ class Rx_FindHelper
 				$this->search[] = $name.' IN (:'.$name.')';
 
 				$this->params[':'.$name] = implode( $args[0] );
+
+				$this->params_plain[$name] = implode( $args[0] );
 			} else {
 				$this->search[] = $name.' = :'.$name;
 
 				$this->params[':'.$name] = $args[0];
+
+				$this->params_plain[$name] = $args[0];
 			}
 		}
 
