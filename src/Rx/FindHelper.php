@@ -65,12 +65,10 @@ class Rx_FindHelper
 
 		// If we are looking for related beans, filter out unrelated ones
 		if ( !empty( $this->related ) ) {
-			if ( is_array( $r ) ) {
-				foreach ( $r as $k => $b ) {
-					foreach ( $this->related as $bean ) {
-						if ( !R::areRelated( $b, $bean ) ) {
-							unset( $r[$k] );
-						}
+			foreach ( $r as $k => $b ) {
+				foreach ( $this->related as $bean ) {
+					if ( !R::areRelated( $b, $bean ) ) {
+						unset( $r[$k] );
 					}
 				}
 			}
