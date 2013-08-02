@@ -39,7 +39,7 @@ R::$x->thing->like($array)->find();
 You can also pass true to the find() function to create exactly the thing you were looking for if it doesn't exist yet:
 
 ```php
-$project = R::$x->project->name($this->config->name)->find(true);
+$project = R::$x->project->name($name)->find(true);
 ```
 
 What if you want to find something related?

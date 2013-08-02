@@ -23,12 +23,12 @@ class Rx_FindHelper
 	 */
 	public function find( $force=false )
 	{
-		$f = $this->find;
+		$ft = $this->find;
 
 		if ( $this->params ) {
-			$r = R::$f( $this->type, $this->makeQuery(), $this->params );
+			$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
 		} else {
-			$r = R::$f( $this->type );
+			$r = R::$ft( $this->type );
 		}
 
 		if ( !is_array($r) ) {
@@ -127,6 +127,11 @@ class Rx_FindHelper
 	public function iterate()
 	{
 		// TODO!
+		$ps = R::$adapter->$db->query("SELECT * FROM accounts");
+
+		return new NoRewindIterator(
+			new IteratorIterator( $ps )
+		);
 	}
 
 	public function free()
@@ -199,6 +204,16 @@ class Rx_FindHelper
 		}
 	}
 
+	/**
+	 * Args for constructing a find:
+	 *
+	 * [0] Data to search for
+	 * [1]
+	 * [2] Override the comparator, default being '='
+	 * @param $name
+	 * @param $args
+	 * @return $this
+	 */
 	public function __call( $name, $args )
 	{
 		if ( empty( $args ) ) {
@@ -211,7 +226,13 @@ class Rx_FindHelper
 
 				$this->params_plain[$name] = implode( $args[0] );
 			} else {
-				$this->search[] = $name.' = :'.$name;
+				if ( isset( $args[2] ) ) {
+					$c = $args[2];
+				} else {
+					$c = '=';
+				}
+
+				$this->search[] = $name.' '.$c.' :'.$name;
 
 				$this->params[':'.$name] = $args[0];
 
