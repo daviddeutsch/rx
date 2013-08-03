@@ -193,6 +193,8 @@ class Rx_FindHelper
 		} else {
 			$this->related[] = $bean;
 		}
+
+		return $this;
 	}
 
 	public function __get( $name )
