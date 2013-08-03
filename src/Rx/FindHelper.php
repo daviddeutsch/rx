@@ -127,11 +127,11 @@ class Rx_FindHelper
 	public function iterate()
 	{
 		// TODO!
-		$ps = R::$adapter->$db->query("SELECT * FROM accounts");
+		//$ps = R::$adapter->$db->query("SELECT * FROM accounts");
 
-		return new NoRewindIterator(
+		/*return new NoRewindIterator(
 			new IteratorIterator( $ps )
-		);
+		);*/
 	}
 
 	public function free()

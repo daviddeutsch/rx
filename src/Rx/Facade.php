@@ -43,6 +43,8 @@ class Rx_Facade extends RedBean_Facade
 					$bean->id = self::store($bean);
 				}
 
+				$bean->setMeta('fresh', true);
+
 				return $bean;
 			}
 		}
