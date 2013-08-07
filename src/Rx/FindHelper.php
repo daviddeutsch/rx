@@ -168,9 +168,7 @@ class Rx_FindHelper
 
 	public function order( $by )
 	{
-		$this->order = ':order_by_value';
-
-		$this->params[':order_by_value'] = $by;
+		$this->order = $by;
 
 		return $this;
 	}
