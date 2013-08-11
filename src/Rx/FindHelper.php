@@ -16,15 +16,15 @@ class Rx_FindHelper
 
 	protected $related = array();
 
-	protected $find = 'find';
+	protected $find = '';
 
 	/**
 	 * Main Find Helper function that concludes a search, returning results
 	 */
-	public function find( $force=false )
+	public function find( $force = false )
 	{
 		if ( empty( $this->related ) ) {
-			$ft = 'find' . ucfirst($this->find);
+			$ft = 'find' . ucfirst( $this->find );
 
 			if ( $this->params ) {
 				$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
@@ -32,7 +32,7 @@ class Rx_FindHelper
 				$r = R::$ft( $this->type );
 			}
 		} else {
-			$rt = 'related' . ucfirst($this->find);
+			$rt = 'related' . ucfirst( $this->find );
 
 			if ( $this->params ) {
 				$r = R::$rt( $this->related[0], $this->type, $this->makeQuery(), $this->params );
@@ -53,12 +53,12 @@ class Rx_FindHelper
 			}
 		}
 
-		if ( !is_array($r) ) {
-			$r = array($r);
+		if ( !is_array( $r ) ) {
+			$r = array( $r );
 		}
 
-		if ( $force && empty($r) ) {
-			$r = array( R::_($this->type, $this->params_plain, true) );
+		if ( $force && empty( $r ) ) {
+			$r = array( R::_( $this->type, $this->params_plain, true ) );
 
 			if ( !empty( $this->related ) ) {
 				R::associate( $r[0], $this->related );
@@ -67,7 +67,7 @@ class Rx_FindHelper
 
 		$this->free();
 
-		if ( count($r) > 1 ) {
+		if ( count( $r ) > 1 ) {
 			return $r;
 		} else {
 			return $r[0];
@@ -81,7 +81,14 @@ class Rx_FindHelper
 	 */
 	public function count()
 	{
-		$r = R::count( $this->type, $this->makeQuery(), $this->param );
+		if ( empty( $this->related ) ) {
+			$r = R::count( $this->type, $this->makeQuery(), $this->param );
+		} else {
+			$r = 0;
+			foreach ( $this->related as $bean ) {
+				$r += R::relatedCount( $bean, $this->type, $this->makeQuery(), $this->param );
+			}
+		}
 
 		$this->free();
 
@@ -97,14 +104,14 @@ class Rx_FindHelper
 		}
 
 		if ( !empty( $this->order ) ) {
-			$order = ' ORDER BY '.$this->order.' ';
+			$order = ' ORDER BY ' . $this->order . ' ';
 		}
 
 		if ( !empty( $this->limit ) ) {
-			$limit = ' LIMIT '.$this->limit.' ';
+			$limit = ' LIMIT ' . $this->limit . ' ';
 		}
 
-		return ' '.$search.$order.$limit.' ';
+		return ' ' . $search . $order . $limit . ' ';
 	}
 
 	/**
@@ -119,7 +126,7 @@ class Rx_FindHelper
 		$temp = $this;
 
 		foreach ( $item as $k => $v ) {
-			$temp = $temp->$k($v);
+			$temp = $temp->$k( $v );
 		}
 
 		return $temp;
@@ -182,10 +189,10 @@ class Rx_FindHelper
 		return $this;
 	}
 
-	public function limit( $limit, $limit2=null )
+	public function limit( $limit, $limit2 = null )
 	{
 		if ( $limit2 ) {
-			$this->limit = $limit.','.$limit2;
+			$this->limit = $limit . ',' . $limit2;
 		} else {
 			$this->limit = $limit;
 		}
@@ -219,8 +226,10 @@ class Rx_FindHelper
 	 * [0] Data to search for
 	 * [1]
 	 * [2] Override the comparator, default being '='
+	 *
 	 * @param $name
 	 * @param $args
+	 *
 	 * @return $this
 	 */
 	public function __call( $name, $args )
@@ -229,9 +238,9 @@ class Rx_FindHelper
 			$this->type = $name;
 		} else {
 			if ( is_array( $args[0] ) ) {
-				$this->search[] = $name.' IN (:'.$name.')';
+				$this->search[] = $name . ' IN (:' . $name . ')';
 
-				$this->params[':'.$name] = implode( $args[0] );
+				$this->params[':' . $name] = implode( $args[0] );
 
 				$this->params_plain[$name] = implode( $args[0] );
 			} else {
@@ -241,9 +250,9 @@ class Rx_FindHelper
 					$c = '=';
 				}
 
-				$this->search[] = $name.' '.$c.' :'.$name;
+				$this->search[] = $name . ' ' . $c . ' :' . $name;
 
-				$this->params[':'.$name] = $args[0];
+				$this->params[':' . $name] = $args[0];
 
 				$this->params_plain[$name] = $args[0];
 			}
