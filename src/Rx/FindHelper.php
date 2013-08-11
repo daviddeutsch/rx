@@ -23,36 +23,45 @@ class Rx_FindHelper
 	 */
 	public function find( $force=false )
 	{
-		$ft = $this->find;
+		if ( empty( $this->related ) ) {
+			$ft = 'find' . ucfirst($this->find);
 
-		if ( $this->params ) {
-			$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
+			if ( $this->params ) {
+				$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
+			} else {
+				$r = R::$ft( $this->type );
+			}
 		} else {
-			$r = R::$ft( $this->type );
+			$rt = 'related' . ucfirst($this->find);
+
+			if ( $this->params ) {
+				$r = R::$rt( $this->related[0], $this->type, $this->makeQuery(), $this->params );
+			} else {
+				$r = R::$rt( $this->related[0], $this->type );
+			}
+
+			if ( count( $this->related ) > 1 ) {
+				foreach ( $r as $k => $b ) {
+					if ( $k === 0 ) continue;
+
+					foreach ( $this->related as $bean ) {
+						if ( !R::areRelated( $b, $bean ) ) {
+							unset( $r[$k] );
+						}
+					}
+				}
+			}
 		}
 
 		if ( !is_array($r) ) {
 			$r = array($r);
 		}
 
-		// If we are looking for related beans, filter out unrelated ones
-		if ( !empty( $this->related ) ) {
-			foreach ( $r as $k => $b ) {
-				foreach ( $this->related as $bean ) {
-					if ( !R::areRelated( $b, $bean ) ) {
-						unset( $r[$k] );
-					}
-				}
-			}
-		}
-
 		if ( $force && empty($r) ) {
 			$r = array( R::_($this->type, $this->params_plain, true) );
 
 			if ( !empty( $this->related ) ) {
-				foreach ( $this->related as $bean ) {
-					R::associate( $r[0], $bean );
-				}
+				R::associate( $r[0], $this->related );
 			}
 		}
 
@@ -147,21 +156,21 @@ class Rx_FindHelper
 
 	public function last()
 	{
-		$this->find = 'findLast';
+		$this->find = 'last';
 
 		return $this;
 	}
 
 	public function all()
 	{
-		$this->find = 'findAll';
+		$this->find = 'last';
 
 		return $this;
 	}
 
 	public function one()
 	{
-		$this->find = 'findOne';
+		$this->find = 'one';
 
 		return $this;
 	}
