@@ -20,8 +20,10 @@ class Rx_FindHelper
 
 	/**
 	 * Main Find Helper function that concludes a search, returning results
+	 *
+	 * @return array|RedBean_OODBBean
 	 */
-	public function find( $force = false )
+	public function find( $force_make = false, $force_array = false )
 	{
 		if ( empty( $this->related ) ) {
 			$ft = 'find' . ucfirst( $this->find );
@@ -32,6 +34,8 @@ class Rx_FindHelper
 				$r = R::$ft( $this->type );
 			}
 		} else {
+			if ( $this->find == 'all' ) $this->find = '';
+
 			$rt = 'related' . ucfirst( $this->find );
 
 			if ( $this->params ) {
@@ -53,11 +57,9 @@ class Rx_FindHelper
 			}
 		}
 
-		if ( !is_array( $r ) ) {
-			$r = array( $r );
-		}
+		if ( !is_array( $r ) ) $r = array( $r );
 
-		if ( $force && empty( $r ) ) {
+		if ( $force_make && empty( $r ) ) {
 			$r = array( R::_( $this->type, $this->params_plain, true ) );
 
 			if ( !empty( $this->related ) ) {
@@ -67,7 +69,7 @@ class Rx_FindHelper
 
 		$this->free();
 
-		if ( count( $r ) > 1 ) {
+		if ( ( count( $r ) > 1 ) && !$force_array ) {
 			return $r;
 		} else {
 			return $r[0];
@@ -170,7 +172,7 @@ class Rx_FindHelper
 
 	public function all()
 	{
-		$this->find = 'last';
+		$this->find = 'all';
 
 		return $this;
 	}
