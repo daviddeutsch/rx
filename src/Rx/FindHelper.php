@@ -102,7 +102,7 @@ class Rx_FindHelper
 		$search = $order = $limit = '';
 
 		if ( !empty( $this->search ) ) {
-			$search = implode( ', ', $this->search );
+			$search = implode( ' AND ', $this->search );
 		}
 
 		if ( !empty( $this->order ) ) {
@@ -240,11 +240,19 @@ class Rx_FindHelper
 			$this->type = $name;
 		} else {
 			if ( is_array( $args[0] ) ) {
-				$this->search[] = $name . ' IN (:' . $name . ')';
 
-				$this->params[':' . $name] = R::genSlots( $args[0] );
+				$names = array();
+				foreach ( $args[0] as $k => $v ) {
+					$n = ':' . $name . $k;
 
-				$this->params_plain[$name] = $args[0][0];
+					$this->params[$n] = $v;
+
+					$names[] = $n;
+				}
+
+				$this->search[] = $name . ' IN (' . implode(',',$names) . ')';
+
+				$this->params_plain[$name] = $args[0];
 			} else {
 				if ( isset( $args[2] ) ) {
 					$c = $args[2];
