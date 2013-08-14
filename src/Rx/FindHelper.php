@@ -57,7 +57,7 @@ class Rx_FindHelper
 			}
 		}
 
-		if ( !is_array( $r ) ) $r = array( $r );
+		if ( !is_array( $r ) && !empty( $r ) ) $r = array( $r );
 
 		if ( $force_make && empty( $r ) ) {
 			$r = array( R::_( $this->type, $this->params_plain, true ) );
@@ -242,9 +242,9 @@ class Rx_FindHelper
 			if ( is_array( $args[0] ) ) {
 				$this->search[] = $name . ' IN (:' . $name . ')';
 
-				$this->params[':' . $name] = implode( $args[0] );
+				$this->params[':' . $name] = R::genSlots( $args[0] );
 
-				$this->params_plain[$name] = implode( $args[0] );
+				$this->params_plain[$name] = $args[0][0];
 			} else {
 				if ( isset( $args[2] ) ) {
 					$c = $args[2];
