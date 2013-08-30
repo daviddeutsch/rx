@@ -155,11 +155,7 @@ class Rx_FindHelper
 	public function free()
 	{
 		foreach ( $this as $k => $v ) {
-			if ( is_array( $v ) ) {
-				$this->$k = array();
-			} else {
-				$this->$k = null;
-			}
+            $this->$k = is_array( $v ) ? array() : null;
 		}
 	}
 
@@ -238,35 +234,36 @@ class Rx_FindHelper
 	{
 		if ( empty( $args ) ) {
 			$this->type = $name;
-		} else {
-			if ( is_array( $args[0] ) ) {
 
-				$names = array();
-				foreach ( $args[0] as $k => $v ) {
-					$n = ':' . $name . $k;
-
-					$this->params[$n] = $v;
-
-					$names[] = $n;
-				}
-
-				$this->search[] = $name . ' IN (' . implode(',',$names) . ')';
-
-				$this->params_plain[$name] = $args[0];
-			} else {
-				if ( isset( $args[2] ) ) {
-					$c = $args[2];
-				} else {
-					$c = '=';
-				}
-
-				$this->search[] = $name . ' ' . $c . ' :' . $name;
-
-				$this->params[':' . $name] = $args[0];
-
-				$this->params_plain[$name] = $args[0];
-			}
+            return $this;
 		}
+
+        if ( is_array( $args[0] ) ) {
+            $names = array();
+            foreach ( $args[0] as $k => $v ) {
+                $n = ':' . $name . $k;
+
+                $this->params[$n] = $v;
+
+                $names[] = $n;
+            }
+
+            $this->search[] = $name . ' IN (' . implode(',',$names) . ')';
+
+            $this->params_plain[$name] = $args[0];
+        } else {
+            if ( isset( $args[2] ) ) {
+                $c = $args[2];
+            } else {
+                $c = '=';
+            }
+
+            $this->search[] = $name . ' ' . $c . ' :' . $name;
+
+            $this->params[':' . $name] = $args[0];
+
+            $this->params_plain[$name] = $args[0];
+        }
 
 		return $this;
 	}
