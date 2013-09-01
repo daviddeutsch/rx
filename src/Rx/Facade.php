@@ -9,7 +9,7 @@ class Rx_Facade extends RedBean_Facade
 
 	public static function setup($dsn = null, $username = null, $password = null, $frozen = false)
 	{
-		parent::setup($dsn, $username, $password, $frozen);
+		parent::setup( $dsn, $username, $password, $frozen );
 
 		self::$x = new Rx_FindHelper();
 	}
@@ -17,17 +17,18 @@ class Rx_Facade extends RedBean_Facade
 	/**
 	 * Multi-Purpose Shortcut for handling Beans
 	 *
-	 * @param      $left
-	 * @param null $right
+	 * @param mixed $left
+	 * @param mixed $right
+	 *
 	 * @return array|int|\RedBean_OODBBean
 	 */
 	public static function _( $one, $two=null, $three=null )
 	{
-		if ( is_object( $one ) ) return self::store( $one );
+		if ( is_object($one) ) return self::store( $one );
 
-        if ( empty($two) )  return self::dispense( $one );
+        if ( empty($two) ) return self::dispense( $one );
 
-        if ( is_int( $two ) ) return self::load( $one, $two );
+        if ( is_int($two) ) return self::load( $one, $two );
 
         $bean = self::dispense( $one );
 
@@ -49,7 +50,7 @@ class Rx_Facade extends RedBean_Facade
 	 */
 	public static function db( $cfg )
 	{
-		if ( empty( self::$toolboxes ) ) {
+		if ( empty(self::$toolboxes) ) {
 			self::setup(
 				$cfg->type.':host='.$cfg->host.';'
 				.'dbname='.$cfg->name,
@@ -58,7 +59,7 @@ class Rx_Facade extends RedBean_Facade
 			);
 		}
 
-		if ( !isset( self::$toolboxes[$cfg->name] ) ) {
+		if ( !isset(self::$toolboxes[$cfg->name]) ) {
 			self::addDatabase(
 				$cfg->name,
 				$cfg->type.':host='.$cfg->host.';'
