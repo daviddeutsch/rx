@@ -44,7 +44,7 @@ class Rx_FindHelper
 				$r = R::$rt( $this->related[0], $this->type );
 			}
 
-			if ( count( $this->related ) > 1 ) {
+			if ( count($r) && ( count( $this->related ) > 1 ) ) {
 				foreach ( $r as $k => $b ) {
 					if ( $k === 0 ) continue;
 
@@ -200,6 +200,8 @@ class Rx_FindHelper
 
 	public function related( $bean )
 	{
+		if ( !is_object( $bean ) ) return $this;
+
 		if ( is_array( $bean ) ) {
 			$this->related = array_merge( $this->related, $bean );
 		} else {
