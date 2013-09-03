@@ -130,6 +130,8 @@ class Rx_FindHelper
 		$temp = $this;
 
 		foreach ( $item as $k => $v ) {
+			if ( is_null($v) ) continue;
+
 			$temp = $temp->$k( $v );
 		}
 
