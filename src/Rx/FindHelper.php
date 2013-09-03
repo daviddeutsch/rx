@@ -25,18 +25,20 @@ class Rx_FindHelper
 	 */
 	public function find( $force_make = false, $force_array = false )
 	{
-		if ( empty( $this->related ) ) {
-			$ft = 'find' . ucfirst( $this->find );
+		if ( empty($this->related) ) {
+			$ft = 'find' . ucfirst($this->find);
 
 			if ( $this->params ) {
 				$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
 			} else {
 				$r = R::$ft( $this->type );
 			}
+
+			if ( !is_array($r) && !empty($r) ) $r = array($r);
 		} else {
 			if ( $this->find == 'all' ) $this->find = '';
 
-			$rt = 'related' . ucfirst( $this->find );
+			$rt = 'related' . ucfirst($this->find);
 
 			if ( $this->params ) {
 				$r = R::$rt( $this->related[0], $this->type, $this->makeQuery(), $this->params );
@@ -44,12 +46,14 @@ class Rx_FindHelper
 				$r = R::$rt( $this->related[0], $this->type );
 			}
 
-			if ( count($r) && ( count( $this->related ) > 1 ) ) {
+			if ( !is_array($r) && !empty($r) ) $r = array($r);
+
+			if ( count($r) && ( count($this->related) > 1 ) ) {
 				foreach ( $r as $k => $b ) {
-					if ( $k === 0 ) continue;
+					if ($k === 0) continue;
 
 					foreach ( $this->related as $bean ) {
-						if ( !R::areRelated( $b, $bean ) ) {
+						if ( !R::areRelated($b, $bean) ) {
 							unset( $r[$k] );
 						}
 					}
@@ -57,10 +61,8 @@ class Rx_FindHelper
 			}
 		}
 
-		if ( !is_array( $r ) && !empty( $r ) ) $r = array( $r );
-
-		if ( $force_make && empty( $r ) ) {
-			$r = array( R::_( $this->type, $this->params_plain, true ) );
+		if ( $force_make && empty($r) ) {
+			$r = array( R::_($this->type, $this->params_plain, true) );
 
 			if ( !empty( $this->related ) ) {
 				R::associate( $r[0], $this->related );
@@ -69,7 +71,7 @@ class Rx_FindHelper
 
 		$this->free();
 
-		if ( ( count( $r ) > 1 ) || $force_array ) {
+		if ( ( count($r) > 1 ) || $force_array ) {
 			return $r;
 		} else {
 			return array_pop($r);
@@ -83,7 +85,7 @@ class Rx_FindHelper
 	 */
 	public function count()
 	{
-		if ( empty( $this->related ) ) {
+		if ( empty($this->related) ) {
 			$r = R::count( $this->type, $this->makeQuery(), $this->param );
 		} else {
 			$r = 0;
@@ -101,15 +103,15 @@ class Rx_FindHelper
 	{
 		$search = $order = $limit = '';
 
-		if ( !empty( $this->search ) ) {
+		if ( !empty($this->search) ) {
 			$search = implode( ' AND ', $this->search );
 		}
 
-		if ( !empty( $this->order ) ) {
+		if ( !empty($this->order) ) {
 			$order = ' ORDER BY ' . $this->order . ' ';
 		}
 
-		if ( !empty( $this->limit ) ) {
+		if ( !empty($this->limit) ) {
 			$limit = ' LIMIT ' . $this->limit . ' ';
 		}
 
@@ -155,7 +157,7 @@ class Rx_FindHelper
 	public function free()
 	{
 		foreach ( $this as $k => $v ) {
-            $this->$k = is_array( $v ) ? array() : null;
+			$this->$k = is_array( $v ) ? array() : null;
 		}
 	}
 
@@ -200,9 +202,9 @@ class Rx_FindHelper
 
 	public function related( $bean )
 	{
-		if ( !is_object( $bean ) ) return $this;
+		if ( !is_object($bean) && !is_array($bean) ) return $this;
 
-		if ( is_array( $bean ) ) {
+		if ( is_array($bean) ) {
 			$this->related = array_merge( $this->related, $bean );
 		} else {
 			$this->related[] = $bean;
@@ -213,7 +215,7 @@ class Rx_FindHelper
 
 	public function __get( $name )
 	{
-		if ( method_exists( $this, $name ) ) {
+		if ( method_exists($this, $name) ) {
 			return $this->$name();
 		} else {
 			return $this->__call( $name, array() );
@@ -234,13 +236,13 @@ class Rx_FindHelper
 	 */
 	public function __call( $name, $args )
 	{
-		if ( empty( $args ) ) {
+		if ( empty($args) ) {
 			$this->type = $name;
 
 			return $this;
 		}
 
-		if ( is_array( $args[0] ) ) {
+		if ( is_array($args[0]) ) {
 			$names = array();
 			foreach ( $args[0] as $k => $v ) {
 				$n = ':' . $name . $k;
@@ -250,7 +252,7 @@ class Rx_FindHelper
 				$names[] = $n;
 			}
 
-			$this->search[] = $name . ' IN (' . implode( ',', $names ) . ')';
+			$this->search[] = $name . ' IN (' . implode(',', $names) . ')';
 
 			$this->params_plain[$name] = $args[0];
 		} else {
