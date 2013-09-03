@@ -28,7 +28,7 @@ class Rx_Facade extends RedBean_Facade
 
         if ( empty($two) ) return self::dispense( $one );
 
-        if ( is_int($two) ) return self::load( $one, $two );
+        if ( is_numeric($two) ) return self::load( $one, $two );
 
         $bean = self::dispense( $one );
 
