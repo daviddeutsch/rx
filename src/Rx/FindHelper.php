@@ -237,35 +237,35 @@ class Rx_FindHelper
 		if ( empty( $args ) ) {
 			$this->type = $name;
 
-            return $this;
+			return $this;
 		}
 
-        if ( is_array( $args[0] ) ) {
-            $names = array();
-            foreach ( $args[0] as $k => $v ) {
-                $n = ':' . $name . $k;
+		if ( is_array( $args[0] ) ) {
+			$names = array();
+			foreach ( $args[0] as $k => $v ) {
+				$n = ':' . $name . $k;
 
-                $this->params[$n] = $v;
+				$this->params[$n] = $v;
 
-                $names[] = $n;
-            }
+				$names[] = $n;
+			}
 
-            $this->search[] = $name . ' IN (' . implode(',',$names) . ')';
+			$this->search[] = $name . ' IN (' . implode( ',', $names ) . ')';
 
-            $this->params_plain[$name] = $args[0];
-        } else {
-            if ( isset( $args[2] ) ) {
-                $c = $args[2];
-            } else {
-                $c = '=';
-            }
+			$this->params_plain[$name] = $args[0];
+		} else {
+			if ( isset( $args[2] ) ) {
+				$c = $args[2];
+			} else {
+				$c = '=';
+			}
 
-            $this->search[] = $name . ' ' . $c . ' :' . $name;
+			$this->search[] = $name . ' ' . $c . ' :' . $name;
 
-            $this->params[':' . $name] = $args[0];
+			$this->params[':' . $name] = $args[0];
 
-            $this->params_plain[$name] = $args[0];
-        }
+			$this->params_plain[$name] = $args[0];
+		}
 
 		return $this;
 	}
