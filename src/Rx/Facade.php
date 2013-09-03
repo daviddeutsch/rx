@@ -24,21 +24,21 @@ class Rx_Facade extends RedBean_Facade
 	 */
 	public static function _( $one, $two=null, $three=null )
 	{
-		if ( is_object( $one ) ) return self::store( $one );
+		if ( is_object($one) ) return self::store($one);
 
-		if ( empty( $two ) ) return self::dispense( $one );
+		if ( empty($two) ) return self::dispense($one);
 
-		if ( is_numeric( $two ) ) return self::load( $one, $two );
+		if ( is_numeric($two) ) return self::load($one, $two);
 
-		$bean = self::dispense( $one );
+		$bean = self::dispense($one);
 
 		foreach ( $two as $k => $v ) {
 			$bean->$k = $v;
 		}
 
-		if ( $three === true ) $bean->id = self::store( $bean );
+		if ( $three === true ) $bean->id = self::store($bean);
 
-		$bean->setMeta( 'fresh', true );
+		$bean->setMeta('fresh', true);
 
 		return $bean;
 	}
