@@ -73,8 +73,10 @@ class Rx_FindHelper
 
 		if ( ( count($r) > 1 ) || $force_array ) {
 			return $r;
-		} else {
+		} elseif ( is_array($r) ) {
 			return array_pop($r);
+		} else {
+			return null;
 		}
 	}
 
