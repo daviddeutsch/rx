@@ -86,11 +86,11 @@ class Rx_FindHelper
 	public function count()
 	{
 		if ( empty($this->related) ) {
-			$r = R::count( $this->type, $this->makeQuery(), $this->param );
+			$r = R::count( $this->type, $this->makeQuery(), $this->params );
 		} else {
 			$r = 0;
 			foreach ( $this->related as $bean ) {
-				$r += R::relatedCount( $bean, $this->type, $this->makeQuery(), $this->param );
+				$r += R::relatedCount( $bean, $this->type, $this->makeQuery(), $this->params );
 			}
 		}
 
