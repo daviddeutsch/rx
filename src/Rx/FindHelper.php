@@ -34,7 +34,9 @@ class Rx_FindHelper
 				$r = R::$ft( $this->type );
 			}
 
-			if ( !is_array($r) && !empty($r) ) $r = array($r);
+			if ( !is_array($r) && !empty($r) ) {
+				$r = array($r);
+			}
 		} else {
 			if ( $this->find == 'all' ) $this->find = '';
 
@@ -46,7 +48,9 @@ class Rx_FindHelper
 				$r = R::$rt( $this->related[0], $this->type );
 			}
 
-			if ( !is_array($r) && !empty($r) ) $r = array($r);
+			if ( !is_array($r) && !empty($r) ) {
+				$r = array($r);
+			}
 
 			if ( count($r) && ( count($this->related) > 1 ) ) {
 				foreach ( $r as $k => $b ) {
