@@ -16,6 +16,8 @@ class Rx_FindHelper
 
 	protected $related = array();
 
+	protected $preload = array();
+
 	protected $find = '';
 
 	/**
@@ -32,6 +34,10 @@ class Rx_FindHelper
 				$r = R::$ft( $this->type, $this->makeQuery(), $this->params );
 			} else {
 				$r = R::$ft( $this->type );
+			}
+
+			if ( !empty($this->preload) ) {
+				R::preload($r, $this->preload);
 			}
 
 			if ( !is_array($r) && !empty($r) ) {
@@ -217,6 +223,13 @@ class Rx_FindHelper
 		} else {
 			$this->related[] = $bean;
 		}
+
+		return $this;
+	}
+
+	public function preload( $preload )
+	{
+		$this->preload = $preload;
 
 		return $this;
 	}
